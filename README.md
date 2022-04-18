@@ -1,6 +1,6 @@
 # ESPN-BottomLine-Scraper
 Simple scraper written in Python to get scores from ESPN bottomline<br>
-It can scrape the box scores, major stats, cautionary print for game links and headlines.</br>
+It can scrape the box scores, major stats, cautionary print for game links and headlines for the games, if available.</br>
 
 <h3>Changelog:</h3>
 <ul>
