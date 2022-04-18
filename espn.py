@@ -1,55 +1,52 @@
-import urllib2
-import urllib
-import re
+import ssl
+import urllib.request
+from bs4 import BeautifulSoup
 
-espn_urls = {'nfl': 'http://sports.espn.go.com/nfl/bottomline/scores',
-             'nba': 'http://sports.espn.go.com/nba/bottomline/scores',
-             'mlb': 'http://sports.espn.go.com/mlb/bottomline/scores',
-             'nhl': 'http://sports.espn.go.com/nhl/bottomline/scores',
-             'ncf': 'http://sports.espn.go.com/ncf/bottomline/scores',
-             'ncb': 'http://sports.espn.go.com/ncb/bottomline/scores'}
+# Ignore SSL certificate errors
+ctx = ssl.create_default_context()
+ctx.check_hostname = False
+ctx.verify_mode = ssl.CERT_NONE
 
-remove_rankings = ['(1)','(2)','(3)','(4)','(5)','(6)','(7)','(8)','(9)',
-                   '(10)','(11)','(12)','(13)','(14)','(15)','(16)','(17)',
-                   '(18)','(19)','(20)','(21)','(22)','(23)','(24)','(25)']
-                   
+# List of available leagues in ESPN database
+leagues = ["nfl", "nba", "mlb", "nhl", "ncf", "ncb"]
 
-def get_content(url):
-    response = urllib2.urlopen(url)
-    content = response.read()
-    return content
-
-content = get_content(espn_urls['mlb'])
-strings = content.split('&')
-scores = []
-for string in strings:
-    if 'left' in string:
-        if string.endswith('(FINAL)'):
-            newstring = string[string.find('=')+1:string.find('(FINAL)')]
-            newstring = newstring.replace('^', '')
-            newstring = urllib.unquote(newstring)
-            for n in remove_rankings:
-                newstring = newstring.replace(n, '')
-            scores.append(newstring.strip())
-
-list_teams = []
-list_scores = []
-
-for score in scores:
-    results = re.findall(r'\d+', score)
-    teams = re.findall(r'\D+', score)
-    new_teams = [team.strip() for team in teams]
-    list_teams.append(new_teams)
-    list_scores.append(results)
-
-compiled_results = zip(list_teams, list_scores)
-print compiled_results
-
-    
-        
-    
-
-
-    
-    
+for league in leagues:
+    url = f"http://www.espn.com/{league}/bottomline/scores"
+    html = urllib.request.urlopen(url, context=ctx).read()
+    soup = BeautifulSoup(html,'lxml')
+    x = urllib.parse.unquote(str(soup))
+    # print(x)
+    x = x.split("&amp")
+    for i in range(1,50):
+        if f"left{i}" in str(x):
+            left = [s.split("=")[1] for s in x if f"left{i}=" in s]
+            right = [s.split("=")[1] for s in x if f"right{i}_" in s]
+            right = right[:-1]
+            link = [s.split(f"url{i}=")[1] for s in x if f"url{i}=" in s]
+            print(link)
+            gameId = link[0].split("gameId=")[-1]
             
+            recap = f"https://www.espn.com/{league}/recap/_/gameId/{gameId}"
+            # print(recap)
+            try:
+                html = urllib.request.urlopen(recap, context=ctx).read()
+                soup = BeautifulSoup(html,'lxml')
+                title = soup.find("header", {"class": ["article-header", "Story__Header"]})
+                title = title.find("h1")
+                u = title.string
+            except:
+                pass
+                try:
+                    recap = f"https://www.espn.com/{league}/game/_/gameId/{gameId}"
+                    html = urllib.request.urlopen(recap, context=ctx).read()
+                    soup = BeautifulSoup(html,'lxml')
+                    title = soup.find("header", {"class": "top-stories__story-header"})
+                    title = title.find("h1")
+                    u = title.string
+                except:
+                    u = "Not found"
+                    pass
+            print(left,right,u)
+            
+
+
