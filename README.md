@@ -7,6 +7,7 @@ It can scrape the box scores, major stats, cautionary print for game links and h
   <li>2015: Initial commit.</li>
   <li>04/18/2022: Remade the script with 2022 standards</li>
   <li>04/18/2022: Now the script prints header, content, and title if it's available.</li>
+  <li>04/19/2022: Script for top headlines available.</li>
 </ul>
 </ul>
 
@@ -17,7 +18,6 @@ It can scrape the box scores, major stats, cautionary print for game links and h
 
 <h3>Future:</h3>
 <ul>
-  <li>Top headlines will be also listed with relevant category in order to make a complete BottomLine.</li>
   <li>A web application that can be included in bottom of a webpage</li>
   <li>A GUI.</li>
 </ul>
