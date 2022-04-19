@@ -25,22 +25,27 @@ def parse(url):
 for league in leagues:
     url = f"https://www.espn.com/{league}/"
     soup = parse(url)
-    container = soup.find("section", {"class": ["headlineStack__listContainer"]})
+    containers = soup.find_all("section", {"class": ["headlineStack__listContainer"]})
     # Finds headline container
-    u = container.find_all("a")
-    for title in u:
-        # Gets links for headlines
-        link = "https://www.espn.com"+title["href"]
-        soup = parse(link)
-        # Checks if it has a date at header
-        try:
-            date2 = soup.find("meta", {"name":"DC.date.issued"})['content']
-
-            if date2[0:10] == str(today) or date2[0:10] == str(yesterday):
-                print(date2[0:10], link, title.get_text())
+    for container in containers:
+        u = container.find_all("a")
+        for title in u:
+            # Gets links for headlines
+            if "https://" not in title['href']:
+                link = "https://www.espn.com"+title["href"]
+                soup = parse(link)
             else:
+                link = title['href']
+                soup = parse(link)
+            # Checks if it has a date at header
+            try:
+                date2 = soup.find("meta", {"name":"DC.date.issued"})['content']
+
+                if date2[0:10] == str(today) or date2[0:10] == str(yesterday):
+                    print(date2[0:10], link, title.get_text())
+                else:
+                    continue
+            except:
                 continue
-        except:
-            continue
         
     # title = title.find("h1")
