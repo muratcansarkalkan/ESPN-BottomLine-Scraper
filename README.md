@@ -8,6 +8,8 @@ It can scrape the box scores, major stats, cautionary print for game links and h
   <li>04/18/2022: Remade the script with 2022 standards</li>
   <li>04/18/2022: Now the script prints header, content, and title if it's available.</li>
   <li>04/19/2022: Script for top headlines available.</li>
+  <li>04/19/2022: Fixed bug with top headlines. Now some links are printed multiple times but after implementation of JSON output they will be fixed.</li>
+  <li>04/21/2022: Now the livescores and headlines are stored as objects, also news are stored only once.</li>
 </ul>
 </ul>
 

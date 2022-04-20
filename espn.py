@@ -1,6 +1,7 @@
 import ssl
 import urllib.request
 from bs4 import BeautifulSoup
+from contents import LiveScore
 
 # Ignore SSL certificate errors
 ctx = ssl.create_default_context()
@@ -11,7 +12,7 @@ ctx.verify_mode = ssl.CERT_NONE
 # http://www.espn.com/espn/latestnews
 # List of available leagues in ESPN database
 # also ncf and ncb included but for now discard
-leagues = ["nfl", "nba", "mlb", "nhl", "ncf", "ncb"]
+leagues = ["nfl", "nba", "mlb", "nhl"]
 leaguedict = {"nfl": "NFL", "nba": "NBA", "mlb": "MLB", "nhl": "NHL", "ncf": "NCAAF", "ncb": "NCAAB"}
 
 def parse(url):
@@ -59,4 +60,5 @@ for league in leagues:
                     total.insert(0, l)
                     pass
 
-            print(total)
+            livescore = LiveScore(total[0],total[1],total[2:])
+            print(livescore.__dict__)
