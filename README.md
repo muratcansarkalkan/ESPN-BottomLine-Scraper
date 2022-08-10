@@ -2,6 +2,11 @@
 Simple scraper written in Python to get scores from ESPN bottomline<br>
 It can scrape the box scores, major stats, cautionary print for game links and headlines for the games, if available.</br>
 
+<h3>Prerequisites</h3>
+<ul>
+  <li>Latest Python version, I guess</li>
+  <li>BeautifulSoup 4</li>
+</ul>
 <h3>Changelog:</h3>
 <ul>
   <li>2015: Initial commit.</li>
@@ -20,6 +25,7 @@ It can scrape the box scores, major stats, cautionary print for game links and h
 
 <h3>Future:</h3>
 <ul>
+  <li>Use of APIs instead of BS4</li>
   <li>A web application that can be included in bottom of a webpage</li>
   <li>A GUI.</li>
 </ul>
